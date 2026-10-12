@@ -505,3 +505,27 @@ Nothing - the image matched the same layout already checked in the prior two pas
 **What was lacking after follow-up prompt 7:**
 
 Nothing was lacking - this was a legitimate question to answer before acting, not a correction. Checked for any actual dependency: data.zip, joke.txt, and .claude/launch.json are referenced nowhere in any deliverable. Root main.py is also never imported or run, but backend/model.py had a comment pointing to it ("matching the project's validated Portkey + Luna example in main.py") - fixed that comment so nothing would dangle, then removed all four (git rm --cached + deleted from the working tree) and added .claude/ to .gitignore so it can't resurface from a future session's browser-preview tooling.
+
+**Follow-up prompt 8:**
+
+also in the screenshots and the order of resolving tickets that I followed was first I resolved ticket 102 because wanted to pay the rent which was a larger amount, then ticket 101 and then did 103. So do you want  to log this somehwere, or is it okay?
+
+**Follow-up prompt 9:**
+
+yes log it and can also mention in the prompt log in the appropriate place or my reflections/any other place you feel documentation would be appropriate
+
+**What was lacking after follow-up prompt 8:**
+
+This was genuinely new information nothing else had captured - every doc described each ticket's outcome independently, never the human approval order. Checked the database for corroborating evidence before recommending anything: payments.id is a strict insertion order, and payment id=1 is the rent ($2,400, ticket 102) while id=2 is the invoice ($840, ticket 101) - independently confirming the stated order. Recommended logging it in the Cash tab (where "what changed, ticket by ticket" already lives) and asked before editing anything.
+
+**What was lacking after follow-up prompt 9:**
+
+Added the order and reasoning to output/desk_tickets.html's Cash tab (with the payments.id evidence) and to output/resolved_tickets.json as a new top-level "human_approval_order" field. While doing this, found something that needed flagging rather than silent editing: the Reflection tab's own section 1 describes a sequential cash narrative ("Ticket 101... cash dropped from $3,400 to $2,560," then "Ticket 102... cash went from $2,560 to $160") that implies a 101-then-102 order - the opposite of what was just confirmed. The ending balance is still correct either way, but the intermediate numbers and implied order in the user's own reflection text don't match reality. Flagged this and asked whether to correct it, rather than changing the user's own words without being told to.
+
+**Follow-up prompt 10 (sent mid-turn):**
+
+yes lets fix it since the assigment mentioned I have to resolve the tickets but didn't mention the order in which I have to do it, its okay to specify what I actually did (as it is also recorded in the screenshots) and the rationale behind it.
+
+**What was lacking after follow-up prompt 10:**
+
+Nothing - straightforward approval to correct the two sentences. Fixed Ticket 101's paragraph (cash dropped from $1,000 to $160, approved second) and Ticket 102's paragraph (cash went from $3,400 to $1,000, approved first - rent was the larger amount), keeping the rest of the user's own wording and the ticket-number ordering of the paragraphs intact. Verified in-browser that both tabs render correctly with the corrected figures.

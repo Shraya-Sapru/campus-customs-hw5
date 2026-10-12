@@ -1,6 +1,7 @@
 {
   "generated_from": "output/audit_trail.json and the live data/campus_customs_new.db, as of the final successful run of each ticket",
   "note": "Each ticket was actually run more than once (101 and 102 twice, 103 four times - see output/harness.md and AI_prompts.md for why: an early self-delegation bug, a too-tight request limit, a database reset in between, and a deliberate rerun of 103 to confirm a delegation-loop fix). This file reflects only the final attempt for each ticket, which is what the current database state matches.",
+  "human_approval_order": "The agents ran Boss on ticket 101 before 102 (see each ticket's 'boss' entry below and output/desk_tickets.html's Actual tabs), but the human approved the payments in the opposite order: ticket 102's rent ($2,400) first, then ticket 101's invoice ($840) - rent was the larger amount, so it was prioritized. This is independently confirmed by payments.id in the database, a strict insertion order: id=1 is the rent payment, id=2 is the invoice payment.",
   "tickets": [
     {
       "id": 101,

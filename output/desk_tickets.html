@@ -297,6 +297,11 @@
       <h4>Ending balance</h4>
       <p><strong>$3,400.00 &minus; $840.00 &minus; $2,400.00 = $160.00.</strong> This matches <code>cash_accounts.balance</code> in the live working database exactly - the math adds up and nothing is missing or extra. <code>payments</code> has exactly 2 rows (the invoice and the rent), both <code>approved_by: "Shraya"</code>, and both payment proposals are marked <code>status: "paid"</code>.</p>
     </div>
+
+    <div class="field">
+      <h4>Order I actually approved these in</h4>
+      <p>I resolved ticket 102 (rent) first, then 101, then 103 - rent was the larger amount, so I wanted to clear it first. The agents themselves ran Boss on 101 before 102 (see each ticket's "Actual" tab), but my own approvals went in the opposite order. That's visible in the database itself, not just my memory of it: <code>payments.id</code> is a strict insertion order, and payment <code>id=1</code> is the <strong>rent</strong> ($2,400) while <code>id=2</code> is the <strong>invoice</strong> ($840) - confirming rent was approved first.</p>
+    </div>
   </section>
 
   <section id="reflection" class="tab-panel">
@@ -304,8 +309,8 @@
 
     <h3>1. How I'd judge the agents on each ticket</h3>
     <p>I looked at four things: did the agent pull correct facts from the database, did it stay in its lane, did it follow the shop rules, and did it waste steps. Rule-following mattered most because that's where real money is on the line.</p>
-    <p><strong>Ticket 101 (Bulldog tee):</strong> This went well overall. Inventory confirmed CC-TEE-WHITE in size S has 0 in stock, and Accounting figured out that Bulldog Print Co won't ship because invoice 501 ($840, due 2026-08-28) is three days overdue. It proposed the payment, I approved it, and cash dropped from $3,400 to $2,560. The miss is that Customer Service never got called, so Tauhid Zaman never got a draft reply about the delay. The ticket got resolved, but the customer was left hanging.</p>
-    <p><strong>Ticket 102 (rent):</strong> Right answer, clumsy route. Facilities confirmed $2,400 due 2026-09-02, Accounting proposed the payment, I approved it, and cash went from $2,560 to $160. But it took 4 delegations, including an Accounting-to-Facilities round trip that asked for lease facts we already had.</p>
+    <p><strong>Ticket 101 (Bulldog tee):</strong> This went well overall. Inventory confirmed CC-TEE-WHITE in size S has 0 in stock, and Accounting figured out that Bulldog Print Co won't ship because invoice 501 ($840, due 2026-08-28) is three days overdue. It proposed the payment, I approved it (second, after 102's rent), and cash dropped from $1,000 to $160. The miss is that Customer Service never got called, so Tauhid Zaman never got a draft reply about the delay. The ticket got resolved, but the customer was left hanging.</p>
+    <p><strong>Ticket 102 (rent):</strong> Right answer, clumsy route. Facilities confirmed $2,400 due 2026-09-02, Accounting proposed the payment, I approved it first - rent was the larger amount, so I wanted to clear it before anything else - and cash went from $3,400 to $1,000. But it took 4 delegations, including an Accounting-to-Facilities round trip that asked for lease facts we already had.</p>
     <p><strong>Ticket 103 (hoodie discount):</strong> Worst start, decent finish. Run one crashed because the Boss delegated to itself and blew the request limit. Run two stopped at "awaiting pricing decision" because I hadn't given it a discount policy. After I added a self-delegation guard and a 30% margin floor over the $22 unit cost, the final run closed it: fill the 8 hoodies in stock at $40 each, decline the 12-unit shortfall (about $264 of restock against only $160 in cash), and no payment needed. Cash stayed at $160. One weak spot is that Customer Service's draft left out the price and reasoning, and the Boss itself flagged it as not usable as-is.</p>
     <p>Across every logged event, the agents stayed in their lanes: only Accounting proposed payments, only the Boss updated ticket status, only Customer Service saved drafts, and only a human approved payments.</p>
 
