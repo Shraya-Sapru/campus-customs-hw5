@@ -8,3 +8,4 @@ __pycache__/
 *token*
 node_modules/
 dist/
+.claude/

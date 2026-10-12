@@ -487,3 +487,21 @@ End with a short list of anything wrong, most serious first, and make sure AI_pr
 **What was lacking after follow-up prompt 5:**
 
 Nothing was actually wrong with the repo beyond one already-known, already-flagged item: data.zip, joke.txt, root main.py, and .claude/ are all still present (never removed, since removal wasn't approved in the prior turn). Every other check passed cleanly: ticket 103 is consistent at $40/unit everywhere (DB, resolved_board.html, resolved_tickets.json, desk_tickets.html Actual+Reflection, audit trail); all three screenshots exist with exact names and the replaced ticket 103 screenshot's blob hash matches between the working tree, local HEAD, and origin/main (confirmed pushed); no actual "screenshot-name issue" was found in item 2 despite the prompt anticipating one, so nothing was fixed there; cash math is exact in all three places; the only non-gpt-6-luna "gpt-" hits are a historical log quote of an already-fixed bug and a self-referential docstring, not real model usage; .env was never tracked or in history; the fresh clone test passed in full, including a byte-for-byte match on the ticket 103 screenshot; and AI_prompts.md has all 11 problem sections with the correct github_url.txt. Reported the file-cleanup finding and waited for approval rather than deleting anything.
+
+**Follow-up prompt 6:**
+
+[Pasted an image of the expected hw5/ file-layout tree: AI_prompts.md, requirements.txt, .env.example, .gitignore, .mcp.json, README.md, data/ (campus_customs.db, campus_customs_new.db), mcp_server/ (server.py, README.md), frontend/, backend/ (main.py, models.py, prompts/ with boss.md, inventory.md, accounting.md, facilities.md, customer_service.md), output/ (harness.md, mcp_smoke.json, desk_tickets.html, design.md, resolved_tickets.json, resolved_board.html, audit_trail.json, github_url.txt), with a note that README should explain copying the original DB to the working copy, starting the MCP server, starting the FastAPI backend, starting the React board, and resetting the DB before a full three-ticket run.]
+
+this is the expected file layout, check if everything is as per that
+
+**Follow-up prompt 7:**
+
+yes if we do that would it impact the ability of the graders to check the code, prompts or run it and check all parts of the problem?
+
+**What was lacking after follow-up prompt 6:**
+
+Nothing - the image matched the same layout already checked in the prior two passes; confirmed every item present again and restated the same four already-known extras (data.zip, joke.txt, root main.py, .claude/) rather than re-deriving a new list.
+
+**What was lacking after follow-up prompt 7:**
+
+Nothing was lacking - this was a legitimate question to answer before acting, not a correction. Checked for any actual dependency: data.zip, joke.txt, and .claude/launch.json are referenced nowhere in any deliverable. Root main.py is also never imported or run, but backend/model.py had a comment pointing to it ("matching the project's validated Portkey + Luna example in main.py") - fixed that comment so nothing would dangle, then removed all four (git rm --cached + deleted from the working tree) and added .claude/ to .gitignore so it can't resurface from a future session's browser-preview tooling.

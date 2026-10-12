@@ -29,7 +29,7 @@ def _build_model() -> OpenAIResponsesModel:
         max_retries=0,
     )
     # OpenAIResponsesModel uses the Responses API (client.responses.create),
-    # matching the project's validated Portkey + Luna example in main.py.
+    # the same call pattern Portkey + Luna is validated against for this project.
     return OpenAIResponsesModel(MODEL_NAME, provider=OpenAIProvider(openai_client=client))
 
 
