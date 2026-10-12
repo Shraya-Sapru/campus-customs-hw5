@@ -468,3 +468,22 @@ I replaced the screenshot, check it now
 **What was lacking after follow-up prompt 2:**
 
 The database and audit trail confirmed $40/unit as the true final price (the live ticket status is literally "resolved - partial fulfillment at $40/unit"). Found two disagreements, not one: output/resolved_board.html's caption said $50, and a second spot you hadn't flagged - output/desk_tickets.html's Cash tab itemization for ticket 103 - also still said $50/unit (the Actual tab itself was already correct from an earlier fix; the Cash tab bullet had been missed). All three screenshot files existed with the exact referenced names. The ticket 103 screenshot itself genuinely showed the earlier $50/unit run (confirmed both by file timestamp, predating the final run, and by reading the image directly) - rather than just changing the caption number to $40 while leaving a screenshot that visibly said $50 (which would have created a new, worse contradiction within the same file), added an honest disclosure note instead. After you replaced the screenshot with a fresh one showing the real $40/unit state, removed that disclosure note and the now-unneeded CSS for it, restoring the clean format matching tickets 101/102.
+
+**Follow-up prompt 5:**
+
+Please run a final pre-submission check on the repo. Report findings first. Only fix what I approve, except the screenshot-name issue in item 2, which you can fix and push.
+
+1. Ticket 103 consistency: confirm resolved_board.html, resolved_tickets.json, the Actual and Reflection sections of desk_tickets.html, and the audit trail all state the same final outcome (units filled and price per unit). Tell me which price the final run used and flag any file that disagrees.
+2. Screenshots: confirm the three files named in resolved_board.html ("Ticket 101 - resolved.png", "Ticket 102 - resolved.png", "Ticket 103 - resolved.png") exist in output/ with exactly those names, and that the replaced 103 screenshot is committed and pushed.
+3. Cash math: starting $3,400, minus $840 (invoice 501), minus $2,400 (rent), equals $160. Confirm the Cash tab, resolved_tickets.json, and cash_accounts in data/campus_customs_new.db all show $160, and that payments has exactly two approved rows.
+4. Model and secrets: search the whole repo for any model string other than gpt-6-luna, and for anything that looks like an API key. Confirm .env is not tracked and not in git history, and .env.example has placeholders only.
+5. Layout: compare the remote tree to the expected layout from Problem 11 and list anything missing or extra (data.zip, joke.txt, root main.py, and .claude/ should be gone).
+6. README: confirm it covers copying the original DB to the working copy, starting the MCP server, starting the FastAPI backend, starting the React board, and resetting the DB before a full run.
+7. Fresh clone test: clone the public repo into a temp folder, confirm both DB files and the screenshots are present, and that .mcp.json uses a relative path.
+8. AI_prompts.md has a section for every problem (1 to 11), and output/github_url.txt has the correct URL.
+
+End with a short list of anything wrong, most serious first, and make sure AI_prompts.md (with this prompt logged) is the last thing committed.
+
+**What was lacking after follow-up prompt 5:**
+
+Nothing was actually wrong with the repo beyond one already-known, already-flagged item: data.zip, joke.txt, root main.py, and .claude/ are all still present (never removed, since removal wasn't approved in the prior turn). Every other check passed cleanly: ticket 103 is consistent at $40/unit everywhere (DB, resolved_board.html, resolved_tickets.json, desk_tickets.html Actual+Reflection, audit trail); all three screenshots exist with exact names and the replaced ticket 103 screenshot's blob hash matches between the working tree, local HEAD, and origin/main (confirmed pushed); no actual "screenshot-name issue" was found in item 2 despite the prompt anticipating one, so nothing was fixed there; cash math is exact in all three places; the only non-gpt-6-luna "gpt-" hits are a historical log quote of an already-fixed bug and a self-referential docstring, not real model usage; .env was never tracked or in history; the fresh clone test passed in full, including a byte-for-byte match on the ticket 103 screenshot; and AI_prompts.md has all 11 problem sections with the correct github_url.txt. Reported the file-cleanup finding and waited for approval rather than deleting anything.
