@@ -1,0 +1,74 @@
+{
+  "generated_from": "output/audit_trail.json and the live data/campus_customs_new.db, as of the final successful run of each ticket",
+  "note": "Each ticket was actually run more than once (101 and 102 twice, 103 four times - see output/harness.md and AI_prompts.md for why: an early self-delegation bug, a too-tight request limit, a database reset in between, and a deliberate rerun of 103 to confirm a delegation-loop fix). This file reflects only the final attempt for each ticket, which is what the current database state matches.",
+  "tickets": [
+    {
+      "id": 101,
+      "subject": "Bulldog tee",
+      "requester": "Tauhid Zaman",
+      "final_status": "resolved",
+      "outcome": "1x CC-TEE-WHITE size S requested; 0 on hand. Bulldog Print Co is the inferred restock vendor but was blocked by open invoice 501 ($840). Accounting proposed paying invoice 501 (proposal #1); a human approved it, which both unblocks the vendor and resolves the ticket. The order itself was not separately fulfilled - the ticket's resolution is the payment, not a shipment.",
+      "agents": {
+        "boss": "Delegated to Inventory and Accounting together, reviewed both findings, set status to \"awaiting payment approval\", then \"resolved\" once the payment route recorded the approval.",
+        "inventory": "Confirmed 0 on hand for CC-TEE-WHITE size S; identified Bulldog Print Co as the likely vendor (inferred from specialty, not a confirmed SKU-vendor link) and that it was blocked by invoice 501.",
+        "accounting": "Confirmed invoice 501 ($840, overdue) and that checking could cover it without going negative; created payment proposal #1.",
+        "facilities": "Not involved.",
+        "customer_service": "Not involved - no draft was created for this ticket, despite the Problem 6 prediction expecting one."
+      },
+      "human_approvals": [
+        {
+          "proposal_id": 1,
+          "kind": "invoice",
+          "ref_id": 501,
+          "amount": 840.0,
+          "approved_by": "Shraya"
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "subject": "Rent due",
+      "requester": "Elm City Properties",
+      "final_status": "resolved",
+      "outcome": "Rent of $2,400 for lease 1 (Chapel Street shop), due 2026-09-02, confirmed 2 days out as of the shop's simulated date. Accounting proposed the rent payment (proposal #2); a human approved it, resolving the ticket.",
+      "agents": {
+        "boss": "Delegated to Facilities and Accounting together, reviewed both findings, set status to \"awaiting payment approval\", then \"resolved\" once approved.",
+        "inventory": "Not involved.",
+        "accounting": "Confirmed checking covered the $2,400 rent alongside the other pending $840 proposal; created payment proposal #2.",
+        "facilities": "Confirmed lease 1's terms ($2,400/month, due 2026-09-02, no prior last-paid date).",
+        "customer_service": "Not involved (none expected for this ticket)."
+      },
+      "human_approvals": [
+        {
+          "proposal_id": 2,
+          "kind": "rent",
+          "ref_id": 1,
+          "amount": 2400.0,
+          "approved_by": "Shraya"
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "subject": "Bulk hoodie discount",
+      "requester": "Yale AI Club",
+      "final_status": "resolved - partial fulfillment at $40/unit",
+      "outcome": "20x CC-HOOD-NAVY size M requested with a bulk discount; only 8 on hand. This ticket was run a fourth time (after tightening the Accounting/Inventory prompts to stop an earlier delegation loop) to confirm the fix; Boss decided to fulfill the 8 available units at $40.00 each (above the 30% discount floor of $28.60 - a different, also-valid price than the $50 chosen in the prior run), and decline the remaining 12: restocking would cost an estimated $264 against a $160 cash balance, and there is no purchase-order tool to action a restock anyway. No payment proposal was created - this ticket never needed human payment approval, only Boss's own pricing decision.",
+      "agents": {
+        "boss": "Delegated to Inventory, then Accounting, then Customer Service; made the final pricing/fulfillment call itself, set status to \"resolved - partial fulfillment at $40/unit\", and explicitly flagged in its own notes that Customer Service's draft was incomplete and should not be used as-is.",
+        "inventory": "Confirmed 8 of 20 on hand (shortfall of 12); Bulldog Print Co inferred as restock vendor; answered Accounting's one follow-up directly instead of delegating further (the targeted fix); later answered Customer Service's stock question too.",
+        "accounting": "Confirmed unit cost $22 / list price $58; recommended $40/unit for the 8 available (above the discount floor); confirmed restocking the 12-unit shortfall (~$264) exceeds the $160 cash balance and that no purchase-order tool exists to attempt it anyway. Delegated back to Inventory once (down from three times in the prior run).",
+        "facilities": "Not involved (none expected).",
+        "customer_service": "Delegated to Inventory to confirm stock, then drafted a reply - but this draft (#3) omitted the price and restock rationale entirely, a quality regression from the prior run's draft (#2); saved to the board, never sent, and Boss flagged it as unusable as-is."
+      },
+      "human_approvals": [],
+      "delegation_loop_check": {
+        "prior_run_delegations": 6,
+        "prior_run_accounting_inventory_roundtrips": 3,
+        "this_run_delegations": 6,
+        "this_run_accounting_inventory_roundtrips": 1,
+        "note": "The targeted Accounting<->Inventory loop is fixed (3 round-trips down to 1), but total delegations still hit the shared budget cap of 6 this run because Customer Service independently delegated to Inventory - a legitimate, different delegation the prior fix didn't address."
+      }
+    }
+  ]
+}

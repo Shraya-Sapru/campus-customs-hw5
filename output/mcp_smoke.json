@@ -1,0 +1,54 @@
+{
+  "tests": [
+    {
+      "ticket": 101,
+      "prompt": "the CC-TEE-WHITE size S inventory check (ticket 101)",
+      "tool": "mcp__campus-customs__get_inventory",
+      "arguments": { "sku": "CC-TEE-WHITE", "size": "S" },
+      "output": {
+        "found": true,
+        "sku": "CC-TEE-WHITE",
+        "name": "Classic Bulldog Tee",
+        "size": "S",
+        "qty": 0,
+        "location": "Aisle B"
+      }
+    },
+    {
+      "ticket": 102,
+      "prompt": "lease 1 (ticket 102)",
+      "tool": "mcp__campus-customs__get_lease",
+      "arguments": { "lease_id": 1 },
+      "output": {
+        "found": true,
+        "id": 1,
+        "space_name": "Chapel Street shop",
+        "landlord": "Elm City Properties",
+        "monthly_rent": 2400.0,
+        "next_due": "2026-09-02",
+        "notes": null
+      }
+    },
+    {
+      "ticket": 103,
+      "prompt": "the pricing for CC-HOOD-NAVY (ticket 103)",
+      "tool": "mcp__campus-customs__get_pricing",
+      "arguments": { "sku": "CC-HOOD-NAVY" },
+      "output": {
+        "found": true,
+        "sku": "CC-HOOD-NAVY",
+        "unit_cost": 22.0,
+        "list_price": 58.0
+      }
+    }
+  ],
+  "db_verification": {
+    "db_path": "data/campus_customs_new.db",
+    "method": "direct read-only SQL query against the same DB file the MCP server points to (mcp_server/db.py), run separately from the MCP calls",
+    "results": [
+      { "ticket": 101, "db_row": { "sku": "CC-TEE-WHITE", "name": "Classic Bulldog Tee", "size": "S", "qty": 0, "location": "Aisle B" }, "matches_mcp_output": true },
+      { "ticket": 102, "db_row": { "id": 1, "space_name": "Chapel Street shop", "landlord": "Elm City Properties", "monthly_rent": 2400.0, "next_due": "2026-09-02", "notes": null }, "matches_mcp_output": true },
+      { "ticket": 103, "db_row": { "sku": "CC-HOOD-NAVY", "unit_cost": 22.0, "list_price": 58.0 }, "matches_mcp_output": true }
+    ]
+  }
+}
