@@ -452,3 +452,19 @@ go ahead, commit it, here is the url: https://github.com/Shraya-Sapru/campus-cus
 **What was lacking after the first prompt:**
 
 Nothing - the report surfaced two real gaps (missing .env.example and README.md, both created) and one structural issue worth flagging before committing: backend/model.py was loading .env from outside this project folder entirely (two directories up, in the shared AI Foundations/.env), which would leave a standalone clone with nowhere sensible to put a .env. Fixed by pointing it at this project's own root, creating a local gitignored .env here (key never printed), and verifying the backend still started correctly before reporting. After approval: initialized git, committed (71 files, confirmed .env/.venv/node_modules/__pycache__ all correctly absent), verified the target repo was empty before pushing (avoided any force-push risk), pushed to main, then added and pushed output/github_url.txt in a second small commit. Confirmed afterward that .env never entered git history at any point.
+
+**Follow-up prompt 2:**
+
+I am running some final checks: Please check the ticket 103 outcome across all my files and make them consistent with the final run. output/resolved_board.html says 8 of 20 fulfilled at $50.00 each, but I think the final run priced it at $40. Compare resolved_board.html, resolved_tickets.json, the Actual and Reflection sections of desk_tickets.html, and the audit trail, and tell me which price the final run really used. Then fix any file that disagrees, keeping the evidence honest. Also confirm the three screenshot files named in resolved_board.html exist in output/ with exactly those names, and tell me whether the 103 screenshot matches the final run. Push the fixes and log this prompt in AI_prompts.md.
+
+**Follow-up prompt 3 (sent mid-turn):**
+
+wait I can click the screenshot again and put it in the folder, would that be better?
+
+**Follow-up prompt 4:**
+
+I replaced the screenshot, check it now
+
+**What was lacking after follow-up prompt 2:**
+
+The database and audit trail confirmed $40/unit as the true final price (the live ticket status is literally "resolved - partial fulfillment at $40/unit"). Found two disagreements, not one: output/resolved_board.html's caption said $50, and a second spot you hadn't flagged - output/desk_tickets.html's Cash tab itemization for ticket 103 - also still said $50/unit (the Actual tab itself was already correct from an earlier fix; the Cash tab bullet had been missed). All three screenshot files existed with the exact referenced names. The ticket 103 screenshot itself genuinely showed the earlier $50/unit run (confirmed both by file timestamp, predating the final run, and by reading the image directly) - rather than just changing the caption number to $40 while leaving a screenshot that visibly said $50 (which would have created a new, worse contradiction within the same file), added an honest disclosure note instead. After you replaced the screenshot with a fresh one showing the real $40/unit state, removed that disclosure note and the now-unneeded CSS for it, restoring the clean format matching tickets 101/102.
