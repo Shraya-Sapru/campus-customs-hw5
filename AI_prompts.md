@@ -427,3 +427,28 @@ Nothing - every number and claim checked against output/desk_tickets.html, outpu
 **Follow-up prompt 2:**
 
 have you logged all the prompts so far?
+
+**What was lacking after follow-up prompt 2:**
+
+This exact message itself hadn't been logged yet - added it. Everything else was confirmed already in place (all 10 problem sections present and sequential, no gaps).
+
+## Problem 11: Submitting to GitHub
+
+**Prompt:**
+
+Problem 11 is submitting to GitHub. First check everything and report, then wait for my go-ahead before committing or pushing anything.
+1. Compare the project against this layout and list anything missing or misnamed: AI_prompts.md, requirements.txt, .env.example, .gitignore, .mcp.json, README.md, data/ (campus_customs.db and campus_customs_new.db), mcp_server/ (server.py, README.md), frontend/, backend/ (main.py, models.py, prompts/ with boss.md, inventory.md, accounting.md, facilities.md, customer_service.md), and output/ (harness.md, mcp_smoke.json, desk_tickets.html, design.md, resolved_tickets.json, resolved_board.html with its screenshots, audit_trail.json, github_url.txt).
+2. Secrets check: confirm .env is in .gitignore and not tracked, search the whole repo and git history for PORTKEY_API_KEY values or anything that looks like a key, and confirm .env.example has placeholders only. Also make sure .gitignore covers node_modules, __pycache__, .venv, and token files.
+3. Make .mcp.json use a relative path so it works on another machine, and make sure requirements.txt lists everything the backend and MCP server need.
+4. Write README.md explaining: copying the original database to the working copy for a clean run, starting the MCP server, starting the FastAPI backend (uvicorn main:app --reload --port 8000 from backend/), starting the React board (npm run dev from frontend/), and resetting the database before a full three-ticket run. Include the PORTKEY_API_KEY setup using .env.example, and note that only gpt-6-luna is used.
+5. Show me git status and tell me what would be committed. Don't change any agent logic or database contents.
+
+Then wait. After I approve, I'll give you the public repo URL (or help me create it), and you'll commit, push, and save the URL in output/github_url.txt.
+
+**Follow-up prompt 1:**
+
+go ahead, commit it, here is the url: https://github.com/Shraya-Sapru/campus-customs-hw5
+
+**What was lacking after the first prompt:**
+
+Nothing - the report surfaced two real gaps (missing .env.example and README.md, both created) and one structural issue worth flagging before committing: backend/model.py was loading .env from outside this project folder entirely (two directories up, in the shared AI Foundations/.env), which would leave a standalone clone with nowhere sensible to put a .env. Fixed by pointing it at this project's own root, creating a local gitignored .env here (key never printed), and verifying the backend still started correctly before reporting. After approval: initialized git, committed (71 files, confirmed .env/.venv/node_modules/__pycache__ all correctly absent), verified the target repo was empty before pushing (avoided any force-push risk), pushed to main, then added and pushed output/github_url.txt in a second small commit. Confirmed afterward that .env never entered git history at any point.
